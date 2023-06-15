@@ -46,7 +46,7 @@
             </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="{% url 'shop:index' %}"><img src="{% static 'img/sun2.png' %}" alt=""></a>
+            <a href="{% url 'shop:index' %}"><img src="{% static 'img/sun_logo1.png' %}" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -62,16 +62,16 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="{% url 'shop:index' %}"><img src="{% static 'img/sun2.png' %}" alt=""></a>
+                        <a href="{% url 'shop:index' %}"><img src="{% static 'img/sun_logo1.png' %}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="{% url 'shop:index' %}">Home</a></li>
-                            <li><a href="#">Women’s</a></li>
-                            <li><a href="#">Men’s</a></li>
-                            <li><a href="{% url 'shop:product_list' %}">Shop</a></li>
+                            <li class="active"><a href="{% url 'shop:index' %}">Головна</a></li>
+                            <li><a href="{% url 'shop:face_list' 'Обличчя'%}">Обличчя</a></li>
+                            <li><a href="#">Тіло</a></li>
+                            <li><a href="#">Вітаміни</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="./product-details.html">Product Details</a></li>
@@ -81,7 +81,7 @@
                                 </ul>
                             </li>
                             <li><a href="./blog.html">Blog</a></li>
-                            <li><a href="./contact.html">Contact</a></li>
+                            <li><a href="./contact.html">Контакти</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -114,6 +114,32 @@
         {% block content %} {% endblock %}
     </main>
 
+     <!-- Instagram Begin -->
+    <div class="instagram">
+        <div class="container-fluid">
+            <div class="row">
+                {% for post in instagram_photos %}
+                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div class="instagram__item set-bg" data-setbg="{{ photo.thumbnail_url }}">
+                        {% if 'video' in post.media_url %}
+                        <video controls poster="{{ media.thumbnail_url }}" class="instagram__video">
+                            <source src="{{ post.media_url }}" type="video/mp4">
+                        </video>
+                        {% else %}
+                        <img src="{{ post.media_url }}" alt="{{ post.caption }}">
+                        {% endif %}
+                        <div class="instagram__text">
+                            <i class="fa fa-instagram"></i>
+                            <a href="https://www.instagram.com/sunrisebeautybar/" target="_blank">@sunrisebeautybar</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Instagram End -->
+
     <!-- Footer Section Begin -->
     <footer class="footer">
         <div class="container">
@@ -121,7 +147,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-7">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="shop/index.html"><img src="{% static 'img/sun2.png' %}" alt=""></a>
+                            <a href="{% url 'shop:index' %}"><img src="{% static 'img/sun_logo1.png' %}" alt=""></a>
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                         cilisis.</p>

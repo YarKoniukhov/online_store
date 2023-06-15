@@ -107,7 +107,7 @@ ol {
 -----------------------*/
 
 .section-title {
-	margin-bottom: 45px;
+	margin-bottom: 35px;
 }
 
 .section-title h4 {
@@ -330,11 +330,21 @@ ol {
 	padding: 30px 0 27px;
 }
 
+.header__menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Размещаем элементы в горизонтальном ряду */
+    align-items: center;
+}
+
 .header__menu ul li {
-	list-style: none;
-	display: inline-block;
-	margin-right: 40px;
+	margin-right: 20px;
 	position: relative;
+}
+/* Убираем margin-right для последнего элемента списка */
+.header__menu ul li:last-child {
+    margin-right: 0;
 }
 
 .header__menu ul li.active a:after {
@@ -350,19 +360,17 @@ ol {
 }
 
 .header__menu ul li:hover .dropdown {
-	top: 27px;
+    top: 100%; /* Отступ сверху для dropdown */
 	opacity: 1;
 	visibility: visible;
-}
+	display: block;
 
-.header__menu ul li:last-child {
-	margin-right: 0;
 }
 
 .header__menu ul li .dropdown {
 	position: absolute;
 	left: 0;
-	top: 56px;
+	top: 100%; /* Отступ сверху для dropdown */
 	width: 150px;
 	background: #111111;
 	text-align: left;
@@ -376,8 +384,13 @@ ol {
 }
 
 .header__menu ul li .dropdown li {
-	display: block;
-	margin-right: 0;
+	display: block; /* Размещаем элементы в столбик */
+    margin-right: 0; /* Убираем отступ между элементами */
+}
+
+/* Отменяем отступ у последнего элемента dropdown */
+.header__menu ul li .dropdown li:last-child {
+    margin-bottom: 0; /* Используем margin-bottom вместо margin-right для последнего элемента */
 }
 
 .header__menu ul li .dropdown li a {
@@ -387,6 +400,26 @@ ol {
 	padding: 8px 20px;
 	text-transform: capitalize;
 }
+
+.header__menu ul li.dropdown {
+    white-space: nowrap;
+}
+
+.header__menu ul li .dropdown ul {
+    display: none;
+    position: static;
+    width: auto;
+}
+
+.header__menu ul li .dropdown:hover ul {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #111111;
+    padding: 0;
+}
+
 
 .header__menu ul li .dropdown li a:after {
 	display: none;
@@ -780,18 +813,12 @@ ol {
 -----------------------*/
 
 .instagram__item {
-	height: 320px;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
-	position: relative;
-	z-index: 1;
+	    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
 .instagram__item:hover:after {
@@ -818,13 +845,30 @@ ol {
 	transition: all, 0.3s;
 }
 
+/* Стили для изображений */
+.instagram__item img {
+    width: 100%; /* Изображение будет занимать всю ширину контейнера */
+    height: 100%; /* Высота будет автоматически подстраиваться, чтобы сохранить пропорции */
+    object-fit: cover;
+}
+
+/* Стили для видео */
+.instagram__item video {
+    width: 100%; /* Видео будет занимать всю ширину контейнера */
+    height: 100%; /* Видео будет занимать всю высоту контейнера */
+    object-fit: cover; /* Это позволяет видео заполнить контейнер, сохраняя пропорции и обрезая лишнее */
+}
+
 .instagram__text {
 	text-align: center;
-	opacity: 0;
-	visibility: hidden;
-	-webkit-transition: all, 0.3s;
-	-o-transition: all, 0.3s;
-	transition: all, 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .instagram__text i {
@@ -1140,7 +1184,6 @@ ol {
 
 .product__item {
 	margin-bottom: 35px;
-
 }
 
 .product__item:hover .product__hover li {
@@ -1157,10 +1200,16 @@ ol {
 }
 
 .product__item__pic {
-	height: 360px;
+    width: 100%; /* Ширина контейнера */
+	height: 305px;
 	position: relative;
 	overflow: hidden;
+}
 
+.product__item__pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .product__item__pic .label {
@@ -1204,7 +1253,7 @@ ol {
 	display: inline-block;
 	margin-right: 10px;
 	position: relative;
-	top: 100px;
+	top: 0px;
 	opacity: 0;
 }
 
@@ -1447,15 +1496,15 @@ ol {
 	color: #0d0d0d;
 	font-weight: 500;
 	display: inline-block;
-	margin-bottom: 0;
+	margin-bottom: 20px;
 }
 
 .filter-range-wrap .range-slider .price-input:after {
 	position: absolute;
-	left: 81px;
+	left: 117px;
 	top: 12px;
 	height: 1px;
-	width: 5px;
+	width: 6px;
 	background: #0d0d0d;
 	content: "";
 }
@@ -1463,7 +1512,9 @@ ol {
 .filter-range-wrap .range-slider .price-input input {
 	font-size: 16px;
 	color: #0d0d0d;
-	max-width: 16%;
+	width: auto;
+	max-width: 30%;
+	box-sizing: border-box;
 	border: none;
 }
 
@@ -1477,6 +1528,7 @@ ol {
 }
 
 .filter-range-wrap .price-range.ui-widget-content {
+    margin-right: 36px;
 	border: none;
 	background: rgba(0, 0, 0, 0.1);
 	height: 5px;
@@ -1504,7 +1556,7 @@ ol {
 
 .sidebar__sizes .section-title,
 .sidebar__color .section-title {
-	margin-bottom: 35px;
+	margin-bottom: 15px;
 }
 
 .sidebar__sizes .section-title h4,
@@ -1795,6 +1847,8 @@ ol {
 	float: left;
 	margin-right: 10px;
 	margin-bottom: 10px;
+	border: 1px solid #ebebeb; /* Добавьте эту строку */
+
 }
 
 .product__details__button ul {
@@ -2116,9 +2170,11 @@ ol {
 	padding-top: 23px;
 }
 
-.shop__cart__table tbody tr .cart__product__item .cart__product__item__title h6 {
+.shop__cart__table tbody tr .cart__product__item .cart__product__item__title h5 {
 	color: #111111;
 	font-weight: 600;
+	padding-right: 40px; /* Задайте желаемый отступ справа */
+
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title .rating i {
@@ -2195,6 +2251,22 @@ ol {
 	display: inline-block;
 	padding: 14px 30px 12px;
 	background: #f5f5f5;
+}
+
+.custom-button {
+    font-size: 14px;
+    color: #111111;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 14px 30px 12px;
+    background: #f5f5f5;
+}
+
+.custom-button span {
+	color: #ca1515;
+	font-size: 14px;
+	margin-right: 5px;
 }
 
 .cart__btn a span {
@@ -3172,9 +3244,28 @@ ol {
 	.header__menu ul li {
 		margin-right: 20px;
 	}
+	.header__menu ul li a {
+        font-size: 14px;
+    }
 	.header__right__auth {
 		margin-right: 5px;
 	}
+	.filter-range-wrap .range-slider .price-input {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Добавьте этот стиль для выравнивания */
+    }
+    .filter-range-wrap .range-slider .price-input p {
+        margin: 0 10px 0 0;
+    }
+    .filter-range-wrap .range-slider .price-input input {
+        max-width: 35%;
+    }
+    .filter-range-wrap .price-range.ui-widget-content .ui-slider-handle {
+        margin-left: -7px; /* Левый отступ для левого бегунка */
+        margin-right: -7px; /* Правый отступ для правого бегунка */
+    }
+
 	.sidebar__filter a {
 		padding: 5px 15px 5px 15px;
 	}
@@ -3202,12 +3293,29 @@ ol {
 		position: relative;
 		bottom: 0;
 	}
-	.filter-range-wrap .range-slider .price-input input {
-		max-width: 27%;
-	}
 	.filter-range-wrap .range-slider .price-input {
-		margin-bottom: 20px;
+		display: flex;
+		align-items: baseline;
+		margin-bottom: 10px; /* Немного уменьшаем отступ снизу */
 	}
+	.filter-range-wrap .range-slider .price-input p {
+		font-size: 13px; /* Уменьшите размер шрифта по желанию */
+		margin-right: 5px; /* Немного уменьшаем отступ справа */
+	}
+	.filter-range-wrap .range-slider .price-input input {
+		max-width: 50%;
+		font-size: 13px; /* Уменьшите размер шрифта по желанию */
+	}
+	.filter-range-wrap .range-slider .price-input input:nth-child(2) {
+		max-width: calc(35% + 10px); /* Измените значение максимальной ширины */
+	}
+	.filter-range-wrap .range-slider .price-input:after {
+		left: 95px; /* Измените значение left по вашему усмотрению */
+	}
+
+    .product__details__pic {
+        margin-bottom: 50px;
+    }
 	.product__details__pic {
 		margin-bottom: 50px;
 	}
@@ -3394,6 +3502,9 @@ ol {
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
+    .filter-range-wrap .range-slider .price-input input {
+        max-width: 100%; /* Занимать всю ширину ячейки на широких мобильных экранах */
+    }
 	.canvas__open {
 		display: block;
 		font-size: 22px;
@@ -3681,6 +3792,20 @@ ol {
 }
 
 
+/* стили для кнопки "Зняти фільтри" */
+.reset-filters-link {
+    display: inline-block;
+    padding: 6px 18px;
+    font-size: 14px; /* Уменьшенный размер шрифта */
+    background-color: #DCDCDC; /* Цвет фона кнопки */
+    color: #444444; /* Цвет текста кнопки */
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-
+.reset-filters-link:hover {
+    background-color: #cc0000; /* Цвет фона кнопки при наведении */
+    color: #fff; /* Цвет текста кнопки при наведении */
+}
 
