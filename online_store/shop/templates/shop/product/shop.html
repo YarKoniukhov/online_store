@@ -5,6 +5,7 @@
     {% if category %}{{ category.name }}{% else %}Products{% endif %}
 {% endblock %}
 
+
 {% block content %}
 
     <!-- Breadcrumb Begin -->
@@ -14,7 +15,12 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> На головну</a>
-                        <span>{% if category %}{{ category.name }}{% else %}Всі продукти{% endif %}</span>
+                        <span>{% if category %} {{ category.name }}. {% else %}Всі продукти за категориям. {% endif %}
+
+                                {% if brand %}
+                                    Бренд: {{ brand.name_brand }}
+                                {% endif %}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -36,7 +42,7 @@
                                 <div class="accordion" id="accordionExample">
                                     <div class="card">
                                         <div class="card-heading active">
-                                            <a data-toggle="collapse" data-target="#collapseOne">Жінки</a>
+                                            <a data-toggle="collapse" data-target="#collapseOne">Категорії товару</a>
                                         </div>
                                         <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                                             <div class="card-body">
@@ -44,10 +50,10 @@
                                                     <li {% if not category %}class="selected"{% endif %}>
                                                         <a href="{% url 'shop:product_list' %}">Всі категорії</a>
                                                     </li>
-                                                    {% for c in categories %}
-                                                        <li {% if category.slug == c.slug %}class="selected" {% endif %}>
-                                                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-                                                         </li>
+                                                    {% for cat in categories %}
+                                                        <li {% if category.slug == cat.slug %}class="selected" {% endif %}>
+                                                            <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                                                        </li>
                                                     {% endfor %}
                                                 </ul>
                                             </div>
@@ -55,17 +61,19 @@
                                     </div>
                                     <div class="card">
                                         <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseTwo">Чоловіки</a>
+                                            <a data-toggle="collapse" data-target="#collapseTwo">Бренд</a>
                                         </div>
                                         <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
                                             <div class="card-body">
                                                 <ul>
-                                                    <li><a href="#">Coats</a></li>
-                                                    <li><a href="#">Jackets</a></li>
-                                                    <li><a href="#">Dresses</a></li>
-                                                    <li><a href="#">Shirts</a></li>
-                                                    <li><a href="#">T-shirts</a></li>
-                                                    <li><a href="#">Jeans</a></li>
+                                                    <li {% if not brand %}class="selected"{% endif %}>
+                                                        <a href="{% url 'shop:product_list' %}">Всі бренди</a>
+                                                    </li>
+                                                    {% for br in brands %}
+                                                        <li {% if brand.slug_brand == br.slug_brand %} class="selected" {% endif %}>
+                                                            <a href="{{ br.get_absolute_url }}">{{ br.name_brand }}</a>
+                                                        </li>
+                                                    {% endfor %}
                                                 </ul>
                                             </div>
                                         </div>
@@ -143,141 +151,82 @@
                         </div>
                         <div class="sidebar__sizes">
                             <div class="section-title">
-                                <h4>Shop by size</h4>
+                                <h4>Шукати за розміром одягу</h4>
                             </div>
                             <div class="size__list">
-                                <label for="xxs">
-                                    xxs
-                                    <input type="checkbox" id="xxs">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="xs">
-                                    xs
-                                    <input type="checkbox" id="xs">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="xss">
-                                    xs-s
-                                    <input type="checkbox" id="xss">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="s">
-                                    s
-                                    <input type="checkbox" id="s">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="m">
-                                    m
-                                    <input type="checkbox" id="m">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="ml">
-                                    m-l
-                                    <input type="checkbox" id="ml">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="l">
-                                    l
-                                    <input type="checkbox" id="l">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="xl">
-                                    xl
-                                    <input type="checkbox" id="xl">
-                                    <span class="checkmark"></span>
-                                </label>
+                                <form id="filter-form" action="{% url 'shop:product_list' %}" method="GET">
+                                    {% for size in sizes %}
+                                        <label for="size-{{ size.slug_size }}">
+                                            {{ size.name_size }}
+                                            <input type="checkbox" name="size" value="{{ size.slug_size }}" id="size-{{ size.slug_size }}"
+                                                {% if size.slug_size in selected_sizes %}checked{% endif %}>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    {% endfor %}
+                                    <button type="submit" style="display: none;">Submit</button>
+                                </form>
                             </div>
                         </div>
-                        <div class="sidebar__color">
-                            <div class="section-title">
-                                <h4>Shop by size</h4>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const checkboxes = document.querySelectorAll('.size__list input[type="checkbox"]');
+                                const form = document.getElementById('filter-form');
+
+                                checkboxes.forEach(function (checkbox) {
+                                    checkbox.addEventListener('change', function () {
+                                        form.submit(); // Отправляем форму при изменении состояния чекбокса
+                                    });
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <div class="row">
+                        {% for product in products %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" width="400" height="330">
+                                    </a>
+                                    <div class="label new">New</div>
+                                    <ul class="product__hover">
+                                        <li><a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" class="image-popup"><span class="arrow_expand" ></span></a></li>
+                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">{{ product.price }} грн.</div>
+                                </div>
                             </div>
-                            <div class="size__list color__list">
-                                <label for="black">
-                                    Blacks
-                                    <input type="checkbox" id="black">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="whites">
-                                    Whites
-                                    <input type="checkbox" id="whites">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="reds">
-                                    Reds
-                                    <input type="checkbox" id="reds">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="greys">
-                                    Greys
-                                    <input type="checkbox" id="greys">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="blues">
-                                    Blues
-                                    <input type="checkbox" id="blues">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="beige">
-                                    Beige Tones
-                                    <input type="checkbox" id="beige">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="greens">
-                                    Greens
-                                    <input type="checkbox" id="greens">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="yellows">
-                                    Yellows
-                                    <input type="checkbox" id="yellows">
-                                    <span class="checkmark"></span>
-                                </label>
+                        </div>
+                        {% endfor %}
+
+                        {% if products.count == 0 %}
+                        <img src="{% static 'img/shop/not_found.jpeg' %}" width="640" height="640" style="display: block; margin: 0 auto;">
+                        {% endif %}
+
+
+                        <div class="col-lg-12 text-center">
+                            <div class="pagination__option">
+                                <a href="#">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#"><i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-lg-9 col-md-9">
-                        <div class="row">
-                            {% for product in products %}
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg">
-                                            <a href="{{ product.get_absolute_url }}">
-                                                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
-                                            </a>
-                                            <div class="label new">New</div>
-                                            <ul class="product__hover">
-                                                <li><a href="{{ product.image.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <h6><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <div class="product__price">{{ product.price }} грн.</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-
-                            <div class="col-lg-12 text-center">
-                                <div class="pagination__option">
-                                    <a href="#">1</a>
-                                    <a href="#">2</a>
-                                    <a href="#">3</a>
-                                    <a href="#"><i class="fa fa-angle-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
                 </div>
             </div>
         </div>
@@ -289,7 +238,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-1.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-1.jpg' %}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -297,7 +246,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-2.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-2.jpg' %}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -305,7 +254,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-3.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-3.jpg' %}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -313,7 +262,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-4.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-4.jpg' %}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -321,7 +270,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-5.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-5.jpg' %}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -329,7 +278,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-6.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-6.jpg' %}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -341,6 +290,4 @@
     </div>
     <!-- Instagram End -->
 {% endblock %}
-
-
 

@@ -1140,7 +1140,6 @@ ol {
 
 .product__item {
 	margin-bottom: 35px;
-
 }
 
 .product__item:hover .product__hover li {
@@ -1160,7 +1159,6 @@ ol {
 	height: 360px;
 	position: relative;
 	overflow: hidden;
-
 }
 
 .product__item__pic .label {
@@ -1204,7 +1202,7 @@ ol {
 	display: inline-block;
 	margin-right: 10px;
 	position: relative;
-	top: 100px;
+	top: 0px;
 	opacity: 0;
 }
 
