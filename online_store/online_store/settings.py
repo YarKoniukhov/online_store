@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i+!ed5+y%sni)^)re-f-=&qlu6kiekpn%0qq$g8@akvag$y65l'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'online_store.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sjicudvd',
-        'USER': 'sjicudvd',
-        'PASSWORD': 'BGVqbQVD1kPC6FUvK91GEKcFPf4YA-6R',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'snuffleupagus.db.elephantsql.com',
         'PORT': '5432',
     }
@@ -143,8 +143,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'yarko1903@gmail.com'
-EMAIL_HOST_PASSWORD = 'hkripaxzoqrotjfq'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
