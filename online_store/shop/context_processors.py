@@ -2,7 +2,7 @@ import requests
 
 
 def instagram_photos_context(request):
-    access_token = 'IGQWROVFp6eVBYcjhobXZASNGl2VVV2YU9iTXBVVngxVktnMzdtWTdkWllsemI4NmhMbnUzT05USWkzczNNaHgtLWJTREtBMGFKdmRGVVJDQWJOVmtuMVYtamxkdmpKZAUhPc1VqejkwazNNbVJEUU5POHI5X01HUEUZD'  # Замените на ваш access token
+    access_token = 'Замените на ваш access token'  
 
     api_url = f'https://graph.instagram.com/me/media?fields=media_url,thumbnail_url,caption&access_token={access_token}&limit=6'
     response = requests.get(api_url)
