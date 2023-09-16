@@ -1,8 +1,13 @@
+import os
 import requests
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 def instagram_photos_context(request):
-    access_token = 'Замените на ваш access token'  
+    access_token = os.getenv('ACCESS_TOKEN')
 
     api_url = f'https://graph.instagram.com/me/media?fields=media_url,thumbnail_url,caption&access_token={access_token}&limit=6'
     response = requests.get(api_url)

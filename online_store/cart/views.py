@@ -40,38 +40,3 @@ def cart_update(request):
             cart.update(int(product_id), cd['quantity'])
     return redirect('cart:cart_detail')
 
-"""
-
-
-
-def update_cart(request):
-    if request.method == 'POST':
-
-        cart = Cart(request)
-        for item in cart:
-            #print('ITEM', item)
-            product_id = item['product'].id  # Получаем идентификатор товара из элемента корзины
-            #print('PRODUCT_ID', product_id)
-            quantity = request.POST.get(f'cart_item_{product_id}-quantity')
-
-            # quantity = request.POST.get('quantity')
-            # print('Received quantity:', str(quantity))
-            form = CartUpdateForm(request.POST, prefix=f'cart_item_{product_id}')
-            # print('FORM', form)
-            if form.is_valid():
-                # quantity = form.cleaned_data['quantity']  # Извлекаем количество из формы
-                #print('QUANTITY222', quantity)
-                cart.update(int(product_id), int(quantity))  # Обновляем количество товара в корзине
-                #print('cart', list(cart))
-            else:
-                # Обработка ошибок, если форма не прошла валидацию
-                pass
-    return redirect('cart:cart_detail')
-
-
-def update_cart(request):
-    if request.method == 'POST':
-        quantity = request.POST.get('quantity')
-        print('Received quantity:', quantity)
-        # Ваша текущая логика обновления корзины
-    return redirect('cart:cart_detail')"""
