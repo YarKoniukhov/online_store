@@ -1,0 +1,225 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+<style>
+    .center-form-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+        .checkout {
+            display: flex;
+            justify-content: center;
+        }
+
+        .checkout .col-lg-8 {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    .col-lg-12.text-center {
+        margin-bottom: 10px; /* Новый отступ снизу */
+    }
+
+</style>
+
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> Головна</a>
+                    <span>Реєстрація нового користувача </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<center>
+    <section class="checkout spad">
+        <div class="container">
+            <form method="post" action="{% url 'register' %}" class="checkout__form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h5>Реєстрація нового користувача</h5>
+                        <div class="row">
+                            {% if form.non_field_errors %}
+                                <p class="error">{{ form.non_field_errors }}</p>
+                            {% endif %}
+                            <div class="col-lg-12 mb-3"></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Ваше ім'я <span>*</span></p>
+                                    <input type="text" name="username" id="id_username" maxlength="30" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Ваше прізвище <span>*</span></p>
+                                    <input type="text" name="last_name" id="id_last_name" maxlength="30" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Дата народження </p>
+                                    <input type="date" name="birth_date" id="id_birth_date">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Телефон <span>*</span></p>
+                                    <input type="text" name="phone" id="id_phone" data-phone-pattern required>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="checkout__form__input">
+                                    <p>Email <span>*</span></p>
+                                    <input type="email" name="email" id="id_email" maxlength="30" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Місто </p>
+                                    <input type="text" name="city" id="id_city" maxlength="30">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Відділення нової пошти </p>
+                                    <input type="text" name="department_np" id="id_department_np">
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Пароль <span>*</span></p>
+                                    <input type="password" class="password" name="password1" id="id_password1" required>
+                                    <i class='bx bx-hide eye-icon'
+                                       style="position: absolute; top: 50%; right: 20px; transform: translateY(-36%);"></i>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Повторіть пароль <span>*</span></p>
+                                    <input type="password" class="password" name="password2" id="id_password2" required>
+                                    <i class='bx bx-hide eye-icon'
+                                       style="position: absolute; top: 50%; right: 20px; transform: translateY(-36%);"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 mb-3"></div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="site-btn"
+                                        style="width: 36%; text-align: center; margin-top: 10px;">Зареєструватися
+                                </button>
+                            </div>
+                            <div class="col-lg-12 mb-3"></div>
+                            <div class="col-lg-12">
+                                <div class="categories__text_log" style="text-align: center; font-size: 12px;">
+                                    <span>Вже маєте акаунт? <a href="{% url 'login' %}">Увійти</a></span>
+                                </div>
+                            </div>
+
+                            <div class="line"></div>
+
+                            <div class="col-lg-12 text-center">
+                                <div class="cart__btn ">
+                                    <div class="media-options">
+                                        <a href="#" class="field google">
+                                            <img src="{% static 'img/google.png' %}" alt="" class="google-img">
+                                             Зареєструватися за допомогою Google
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <div class="cart__btn ">
+                                    <div class="media-options">
+                                        <a href="{% url 'social:begin' 'facebook' %}" class="field facebook">
+                                            <i class='bx bxl-facebook facebook-icon' style="vertical-align: middle; margin-bottom: 3px;"></i>
+                                            <span style="vertical-align: middle;">Зареєструватися за допомогою Facebook</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</center>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Находим все элементы с классом .eye-icon
+        const eyeIcons = document.querySelectorAll('.eye-icon');
+
+        // Добавляем обработчик события для каждой иконки глаза
+        eyeIcons.forEach(eyeIcon => {
+            eyeIcon.addEventListener('click', function () {
+                // Находим родительский элемент и затем находим поле ввода пароля в его пределах
+                const parentElement = eyeIcon.parentElement;
+                const passwordInput = parentElement.querySelector('.password');
+
+                // Изменяем тип соответствующего поля ввода пароля при клике на иконку глаза
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    eyeIcon.classList.replace('bx-hide', 'bx-show');
+                } else {
+                    passwordInput.type = 'password';
+                    eyeIcon.classList.replace('bx-show', 'bx-hide');
+                }
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+          var eventCalllback = function(e) {
+            var el = e.target,
+              clearVal = el.dataset.phoneClear,
+              pattern = el.dataset.phonePattern,
+              matrix_def = "+38 (___) ___-__-__",
+              matrix = pattern ? pattern : matrix_def,
+              i = 0,
+              def = matrix.replace(/\D/g, ""),
+              val = e.target.value.replace(/\D/g, "");
+            if (clearVal !== 'false' && e.type === 'blur') {
+              if (val.length < matrix.match(/([\_\d])/g).length) {
+                e.target.value = '';
+                return;
+              }
+            }
+            if (def.length >= val.length) val = def;
+            e.target.value = matrix.replace(/./g, function(a) {
+              return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a
+            });
+          }
+          var phone_inputs = document.querySelectorAll('[data-phone-pattern]');
+          for (let elem of phone_inputs) {
+            for (let ev of ['input', 'blur', 'focus']) {
+              elem.addEventListener(ev, eventCalllback);
+            }
+          }
+        });
+
+</script>
+
+
+
+
+
+{% endblock %}

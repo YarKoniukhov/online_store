@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+
+
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+  <section class="signup-register-container forms">
+      <div class="form login">
+          <div class="form-content">
+              <header class="login-header">Вітаю {{ new_user.first_name }}!</header>
+            <p>
+              Ваш акаунт успішно створено.
+              Now you can <a href="{% url 'login' %}">log in</a>.
+            </p>
+          </div>
+      </div>
+  </section>
+{% endblock %}

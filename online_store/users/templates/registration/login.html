@@ -1,0 +1,144 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+<style>
+    .center-form-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+        .checkout {
+            display: flex;
+            justify-content: center;
+        }
+
+        .checkout .col-lg-8 {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    .col-lg-12.text-center {
+        margin-bottom: 10px; /* Новый отступ снизу */
+    }
+
+</style>
+
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> Головна</a>
+                    <span>Вхід </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<center>
+    <section class="checkout spad">
+        <div class="container">
+            <form method="post" action="{% url 'login' %}" class="checkout__form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h5>Вхід</h5>
+                        <div class="row">
+                            {% if form.non_field_errors %}
+                            <p class="error">{{ form.non_field_errors }}</p>
+                            {% endif %}
+                            <div class="col-lg-12 mb-3"></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Email</p>
+                                    <input type="email" name="username" id="id_username" class="input">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Пароль</p>
+                                    <input type="password" name="password" id="id_password" class="password">
+                                    <i class='bx bx-hide eye-icon'
+                                       style="position: absolute; top: 50%; right: 20px; transform: translateY(-36%);"></i>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="categories__text_log" style="text-align: center;">
+                                    <a href="{% url 'password_reset' %}">Забули пароль?</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mb-3"></div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="site-btn"
+                                        style="width: 36%; text-align: center; margin-top: 10px;">Увійти
+                                </button>
+                            </div>
+                            <div class="col-lg-12 mb-3"></div>
+                            <div class="col-lg-12">
+                                <div class="categories__text_log" style="text-align: center; font-size: 12px;">
+                                    <span>Не маєте акаунта? <a href="{% url 'register' %}">Зареєструватись</a></span>
+                                </div>
+                            </div>
+
+                            <div class="line"></div>
+
+                            <div class="col-lg-12 text-center">
+                                <div class="cart__btn ">
+                                    <div class="media-options">
+                                        <a href="{% url 'social:begin' 'google-oauth2' %}" class="field google">
+                                            <img src="{% static 'img/google.png' %}" alt="" class="google-img">
+                                            Увійти за допомогою Google
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <div class="cart__btn ">
+                                    <div class="media-options">
+                                        <a href="{% url 'social:begin' 'facebook' %}" class="field facebook">
+                                            <i class='bx bxl-facebook facebook-icon' style="vertical-align: middle; margin-bottom: 3px;"></i>
+                                            <span style="vertical-align: middle;">Увійти за допомогою Facebook</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</center>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const eyeIcon = document.querySelector('.eye-icon');
+        const passwordInput = document.querySelector('.password');
+
+        eyeIcon.addEventListener('click', function () {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.replace('bx-hide', 'bx-show');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.replace('bx-show', 'bx-hide');
+            }
+        });
+    });
+
+</script>
+
+
+{% endblock %}
