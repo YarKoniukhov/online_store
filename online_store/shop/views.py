@@ -1,11 +1,8 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Category, Brand, Product, Subcategory
-from decimal import Decimal
+from django.shortcuts import render, get_object_or_404, redirect
+from cart.cart import Cart
+from .models import Category, Brand, Product
 from django.db.models import Q, Min, Max
-from django.http import JsonResponse
 from random import sample
-import requests
-# from cart.forms import CartAddProductForm
 
 
 def index(request):
@@ -84,7 +81,7 @@ def product_list(request, category_name):
         'category_name': category_name,
     }
 
-    return render(request, 'shop/product/face_list.html', context)
+    return render(request, 'shop/product/product_list.html', context)
 
 
 def product_detail(request, id, url):
@@ -106,8 +103,7 @@ def product_detail(request, id, url):
         'product': product,
         'category': category,
         'random_related_products': random_related_products,
-       # 'cart_product_form': cart_product_form,
+        # 'cart_product_form': cart_product_form,
     }
 
     return render(request, 'shop/product/product_details.html', context)
-

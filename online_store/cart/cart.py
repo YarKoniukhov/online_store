@@ -50,9 +50,9 @@ class Cart(object):
 
     def remove(self, product):
         """Удаление товара из корзины."""
-        product.id = str(product.id)
-        if product.id in self.cart:
-            del self.cart[product.id]
+        product_id = str(product.id)  # Преобразуем product_id в строку, если он не строка
+        if product_id in self.cart:
+            del self.cart[product_id]
             self.save()
 
     def get_total_price(self):

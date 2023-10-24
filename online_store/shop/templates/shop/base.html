@@ -41,17 +41,30 @@
             <li><a href="#"><span class="icon_heart_alt"></span>
                 <div class="tip">2</div>
             </a></li>
-            <li><a href="#"><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
+            <li><a href="{% url 'cart:cart_detail' %}"><span class="icon_bag_alt"></span>
+                <div class="tip">
+                    {% with total_items=cart|length %}
+                        {% if cart|length > 0 %}
+                            {{ total_items }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    {% endwith %}
+                </div>
             </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="{% url 'shop:index' %}"><img src="{% static 'img/sun_logo1.png' %}" alt=""></a>
+            <a href="./index.html"><img src="img/logo.png" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
-            <a href="#">Login</a>
-            <a href="#">Register</a>
+            {% if user.is_authenticated %}
+                <a>{{ user|capfirst }}</a>
+                <a href="{% url 'logout' %}">Вийти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Вхід</a>
+                <a href="{% url 'register' %}">Реєстрація</a>
+            {% endif %}
         </div>
     </div>
     <!-- Offcanvas Menu End -->
@@ -70,7 +83,7 @@
                         <ul>
                             <li class="active"><a href="{% url 'shop:index' %}">Головна</a></li>
                             <li><a href="{% url 'shop:face_list' 'Обличчя'%}">Обличчя</a></li>
-                            <li><a href="#">Тіло</a></li>
+                            <li><a href="{% url 'shop:body_list' 'Тіло'%}">Тіло</a></li>
                             <li><a href="#">Вітаміни</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
@@ -88,16 +101,29 @@
                 <div class="col-lg-3">
                     <div class="header__right">
                         <div class="header__right__auth">
-                            <a href="#">Login</a>
-                            <a href="#">Register</a>
+                            {% if user.is_authenticated %}
+                                <a>{{ user|capfirst }}</a>
+                                <a href="{% url 'logout' %}">Вийти</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Вхід</a>
+                                <a href="{% url 'register' %}">Реєстрація</a>
+                            {% endif %}
                         </div>
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
                             <li><a href="#"><span class="icon_heart_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span>
-                                <div class="tip">2</div>
+                            <li><a href="{% url 'cart:cart_detail' %}"><span class="icon_bag_alt"></span>
+                                <div class="tip">
+                                        {% with total_items=cart|length %}
+                                            {% if cart|length > 0 %}
+                                                {{ total_items }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        {% endwith %}
+                                </div>
                             </a></li>
                         </ul>
                     </div>

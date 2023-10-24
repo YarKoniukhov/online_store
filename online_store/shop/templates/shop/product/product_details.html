@@ -59,7 +59,8 @@
                         <div class="product__details__price">{{ product.price }} грн.<span>$ 83.0</span></div>
                         <p>{{ product.mini_description }}</p>
                         <div class="product__details__button">
-                            <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                            <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
+
                                 {% csrf_token %}
                                 <div class="quantity">
                                     <span>Кількість:</span>

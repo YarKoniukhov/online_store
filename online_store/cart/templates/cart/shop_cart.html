@@ -26,90 +26,67 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shop__cart__table">
-  <form method="post" action="{% url 'cart:cart_update' %}" id="update-cart-form">
+                        <form method="post" action="{% url 'cart:cart_update' %}" id="update-cart-form">
                         {% csrf_token %}
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Товар</th>
-                                    <th>Ціна</th>
-                                    <th>Кількість</th>
-                                    <th>Всього</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in cart %}
-                                    {% with product=item.product %}
-                                        <tr>
-                                            <td class="cart__product__item">
-                                                <img src="{% if product.image %}{{ product.image.url }}
-                                                    {% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"
-                                                     style="width: 100px; height: auto;">
-                                                <div class="cart__product__item__title">
-                                                    <h5>{{ item.product.name }}</h5>
-                                                    <div class="rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Товар</th>
+                                        <th>Ціна</th>
+                                        <th>Кількість</th>
+                                        <th>Всього</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart %}
+                                        {% with product=item.product %}
+                                            <tr>
+                                                <td class="cart__product__item">
+                                                    <img src="{% if product.image %}{{ product.image.url }}
+                                                        {% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"
+                                                         style="width: 100px; height: auto;">
+                                                    <div class="cart__product__item__title">
+                                                        <h5>{{ item.product.name }}</h5>
+                                                        <div class="rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="cart__price">{{ item.product.price }} грн.</td>
-                                            <td class="cart__quantity">
-                                                <div class="pro-qty">
-                                                    <input type="text" name="cart_item_{{ item.product.id }}-quantity" value="{{ item.quantity }}">
-                                                </div>
-                                            </td>
-
-
-                                                <!--
-                                                <form action="{% url 'cart:cart_add' product.id %}" method="post">
-                                                    {{ item.update_quantity_form.quantity }}
-                                                    {{ item.update_quantity_form.update }}
-                                                    <input type="submit" value="Update">
-                                                    {% csrf_token %}
-                                                </form>
-
-                                                <div class="pro-qty">
-                                                <span class="dec qtybtn">-</span>
-                                                    <input type="text" value="1" data-id="10">
-
-                                                <span class="inc qtybtn">+</span></div>
-
-                                                 <input type="text" value="{{ item.quantity }}" data-id="{{ item.product.id }}">
-
-<div class="pro-qty"><span class="dec qtybtn">-</span>
-                                                    <input type="text" value="1">
-
-                                                <span class="inc qtybtn">+</span></div>
-
-                                                -->
-                                            <td class="cart__total">{{ item.total_price }} грн.</td>
-                                            <td class="cart__close"><a href="{% url 'cart:cart_remove' item.product.id %}"><span class="icon_close"></span></a></td>
-                                        </tr>
-                                    {% endwith %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
-
-            </form>
+                                                </td>
+                                                <td class="cart__price">{{ item.product.price }} грн.</td>
+                                                <td class="cart__quantity">
+                                                    <div class="pro-qty">
+                                                        <input type="text" name="cart_item_{{ item.product.id }}-quantity" value="{{ item.quantity }}">
+                                                    </div>
+                                                </td>
+                                                <td class="cart__total">{{ item.total_price }} грн.</td>
+                                                <td class="cart__close"><a href="{% url 'cart:cart_remove' item.product.id %}"><span class="icon_close"></span></a></td>
+                                            </tr>
+                                        {% endwith %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="cart__btn">
-                        <a href="{% url 'shop:face_list' category_name=request.session.last_visited_category %}" class="button light">Продовжити купувати</a>
+                        <a href="{% if request.session.last_visited_category %}{% url 'shop:product_list' category_name=request.session.last_visited_category %}
+                            {% else %}{% url 'shop:index' %}{% endif %}" class="button light">Продовжити покупки</a>
+
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="cart__btn update__btn">
-
-        <button type="submit" form="update-cart-form" class="btn custom-button"><span class="icon_loading"></span> оновити кошик</button>
-
+                        <button type="submit" form="update-cart-form" class="btn custom-button">
+                            <span class="icon_loading"></span> Оновити кошик
+                        </button>
                     </div>
                 </div>
             </div>
