@@ -1,0 +1,134 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+    <section class="signup-register-container forms">
+        <div class="form login">
+            <div class="form-content">
+                <header class="login-header">Реєстрація нового користувача</header>
+
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="field input-field">
+                        <input type="text" name="username" id="id_username" maxlength="30" placeholder="Ваше ім'я*" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="text" name="last_name" id="id_last_name" maxlength="30" placeholder="Ваше прізвище*" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="date" name="birth_date" id="id_birth_date" placeholder="Дата народження">
+                    </div>
+                    <div class="field input-field">
+                        <input type="text" name="phone" id="id_phone" placeholder="Телефон*" data-phone-pattern required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="email" name="email" id="id_email" maxlength="30" placeholder="E-mail*" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="password" class="password" name="password1" id="id_password1" placeholder="Пароль*" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="password" class="password" name="password2" id="id_password2" placeholder="Повтор пароля*" required>
+                        <i class='bx bx-hide eye-icon'></i>
+                    </div>
+                    <div class="field button-field">
+                        <button>Зареєструватися</button>
+                    </div>
+                </form>
+                <div class="form-link">
+                    <span>Вже маєте акаунт? <a href="{% url 'login' %}" class="login-link">Увійти</a></span>
+                </div>
+            </div>
+
+            <div class="line"></div>
+
+            <div class="media-options">
+                <a href="#" class="field facebook">
+                    <i class='bx bxl-facebook facebook-icon'></i>
+                    <span>Увійти за допомогою Facebook</span>
+                </a>
+            </div>
+
+            <div class="media-options">
+                <a href="#" class="field google">
+                    <img src="{% static 'img/google.png' %}" alt="" class="google-img">
+                    <span>Увійти за допомогою Google</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+
+    <script>
+      const loginForm = document.querySelector(".form.login form");
+      loginForm.addEventListener("submit", () => {
+      });
+
+      const forms = document.querySelector(".forms"),
+            pwShowHide = document.querySelectorAll(".eye-icon"),
+            links = document.querySelectorAll(".link");
+
+      pwShowHide.forEach(eyeIcon => {
+          eyeIcon.addEventListener("click", () => {
+              let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll(".password");
+
+              pwFields.forEach(password => {
+                  if(password.type === "password"){
+                      password.type = "text";
+                      eyeIcon.classList.replace("bx-hide", "bx-show");
+                      return;
+                  }
+                  password.type = "password";
+                  eyeIcon.classList.replace("bx-show", "bx-hide");
+              })
+
+          })
+      })
+
+      links.forEach(link => {
+          link.addEventListener("click", e => {
+             e.preventDefault(); //preventing form submit
+             forms.classList.toggle("show-signup");
+          })
+      })
+    </script>
+
+    <script>
+         document.addEventListener("DOMContentLoaded", function() {
+          var eventCalllback = function(e) {
+            var el = e.target,
+              clearVal = el.dataset.phoneClear,
+              pattern = el.dataset.phonePattern,
+              matrix_def = "+38 (___) ___-__-__",
+              matrix = pattern ? pattern : matrix_def,
+              i = 0,
+              def = matrix.replace(/\D/g, ""),
+              val = e.target.value.replace(/\D/g, "");
+            if (clearVal !== 'false' && e.type === 'blur') {
+              if (val.length < matrix.match(/([\_\d])/g).length) {
+                e.target.value = '';
+                return;
+              }
+            }
+            if (def.length >= val.length) val = def;
+            e.target.value = matrix.replace(/./g, function(a) {
+              return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a
+            });
+          }
+          var phone_inputs = document.querySelectorAll('[data-phone-pattern]');
+          for (let elem of phone_inputs) {
+            for (let ev of ['input', 'blur', 'focus']) {
+              elem.addEventListener(ev, eventCalllback);
+            }
+          }
+        });
+    </script>
+{% endblock %}
