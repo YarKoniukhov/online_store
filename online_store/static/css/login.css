@@ -65,6 +65,8 @@ form{
     color: #8b8b8b;
     cursor: pointer;
     padding: 5px;
+    z-index: 1; /* добавлено */
+
 }
 .field button{
     color: #fff;
@@ -128,13 +130,15 @@ a.facebook .facebook-icon{
     align-items: center;
     justify-content: center;
     background-color: #fff;
+    margin-top: 6.5px; /* Измените значение по вашему желанию */
+
 }
 .facebook-icon,
 img.google-img{
     position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
+    top: 47%;
+    left: 35px;
+    transform: translateY(-150%);
 }
 img.google-img{
     height: 20px;

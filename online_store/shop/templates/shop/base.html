@@ -59,7 +59,7 @@
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
             {% if user.is_authenticated %}
-                <a>{{ user|capfirst }}</a>
+                <a href="{% url 'account' %}">{{ user|capfirst }}</a>
                 <a href="{% url 'logout' %}">Вийти</a>
             {% else %}
                 <a href="{% url 'login' %}">Вхід</a>
@@ -102,7 +102,11 @@
                     <div class="header__right">
                         <div class="header__right__auth">
                             {% if user.is_authenticated %}
-                                <a>{{ user|capfirst }}</a>
+                                {% if user.first_name %}
+                                    <a href="{% url 'account' %}">{{ user.first_name|capfirst }}</a>
+                                {% else %}
+                                    <a href="{% url 'account' %}">{{ user.username|capfirst }}</a>
+                                {% endif %}
                                 <a href="{% url 'logout' %}">Вийти</a>
                             {% else %}
                                 <a href="{% url 'login' %}">Вхід</a>
@@ -250,17 +254,18 @@
     </div>
     <!-- Search End -->
 
-<!-- Js Plugins -->
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-<script src="{% static 'js/jquery-ui.min.js' %}"></script>
-<script src="{% static 'js/mixitup.min.js' %}"></script>
-<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
-<script src="{% static 'js/jquery.slicknav.js' %}"></script>
-<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-<script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
+
+    <!-- Js Plugins -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/mixitup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 
 </html>
