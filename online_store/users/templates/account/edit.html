@@ -1,5 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
+{% block title %}Редагування персональних даних{% endblock %}
 {% block content %}
 
 <style>
@@ -40,13 +41,6 @@
 <section class="checkout spad">
     <div class="container">
         <form method="post" action="{% url 'edit' %}" class="checkout__form">
-            {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
 
             {% csrf_token %}
 
@@ -57,20 +51,19 @@
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
                                 <p>Ваше ім'я</p>
-                                <input type="text" name="username" value="{{ form.username.value|default:'не указано' }}">
+                                <input type="text" name="first_name" value="{{ user_data.first_name }}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
                                 <p>Ваше прізвище</p>
-                                <input type="text" name="last_name" value="{{ form.last_name.value|default:'не указано' }}">
+                                <input type="text" name="last_name" value="{{ user_data.last_name|default:'не указано' }}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
-                                <p>Дата народження </p>
-                                <input type="text" name="birth_date" value="{{ user_data.birth_date|date:'Y-m-d' }}" >
-    <input type="date" name="birth_date_picker" value="{{ user_data.birth_date|date:'Y-m-d'|default:'не указано' }}" style="display: none;">
+                                <p>Дата народження (дд.мм.рр)</p>
+                                <input type="text" name="birth_date" value="{{ user_data.birth_date|date:'d.m.Y' }}" >
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -82,7 +75,7 @@
                         <div class="col-lg-12">
                             <div class="checkout__form__input">
                                 <p>Email </p>
-                                <input type="text" name="email" value="{{ user_data.email|default:'не указано' }}">
+                                <input type="text" name="email" value="{{ user_data.email }}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -93,7 +86,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
-                                <p>Відділ нової пошти </p>
+                                <p>Відділення нової пошти </p>
                                 <input type="text" name="department_np" value="{{ user_data.department_np|default:'не указано' }}">
                             </div>
                         </div>

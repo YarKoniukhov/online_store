@@ -3269,8 +3269,21 @@ ol {
         font-size: 14px;
     }
 	.header__right__auth {
-		margin-right: 5px;
-	}
+	    display: inline-block;
+	    margin-right: 5px;
+    }
+
+    .header__right__auth a {
+        font-size: 10px;
+        color: #333333;
+        position: relative;
+        margin-right: 4px;
+        white-space: nowrap; /* Запрет переноса строки */
+        display: inline-block;
+    }
+
+
+
 	.filter-range-wrap .range-slider .price-input {
         display: flex;
         align-items: center;

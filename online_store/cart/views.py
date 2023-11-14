@@ -20,7 +20,6 @@ def cart_add(request, product_id):
 
     # Сохраните информацию о категории или странице в сессии
     category = request.GET.get('category')
-    print('category', category)
 
     request.session['last_visited_category'] = category
 

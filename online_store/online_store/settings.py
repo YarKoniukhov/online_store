@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'social_django',
     'django_extensions',
+    'payment',
 ]
 
 
@@ -152,13 +153,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-"""# Email settings
+# Email settings
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')"""
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -205,5 +207,42 @@ SOCIAL_AUTH_PIPELINE = [
 ]
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+# Настроечные параметры Stripe
+# Публикуемый ключ
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+# Секретный ключ
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = os.getenv('STRIPE_API_VERSION')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+
+# Ngrok
+CSRF_TRUSTED_ORIGINS = [
+    'https://765e-93-127-101-56.ngrok-free.app/'
+    # Другие доверенные источники, если есть
+]
+
+
+"""
+technical aspects
+
+Run server
+python manage.py runserver_plus --cert-file cert.crt
+
+
+Launching RabbitMQ from Docker
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management
+ 
+Starting a Celery employee
+celery -A online_store worker -l info
+
+Tracking Celery with the Flower tool
+celery -A online_store flower
+
+Stripe
+stripe login
+stripe listen --forward-to localhost:8000/payment/webhook/
+
+ngrok
+ngrok http 8000
+"""
