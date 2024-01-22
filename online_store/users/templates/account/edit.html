@@ -41,9 +41,7 @@
 <section class="checkout spad">
     <div class="container">
         <form method="post" action="{% url 'edit' %}" class="checkout__form">
-
             {% csrf_token %}
-
             <div class="row">
                 <div class="col-lg-8">
                     <h5>Редагування персональних даних</h5>
@@ -95,7 +93,6 @@
                                     style="width: 36%; text-align: center; margin-top: 10px;">Зберегти
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>

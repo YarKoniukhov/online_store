@@ -86,9 +86,9 @@
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="{% url 'shop:index' %}">Головна</a></li>
-                            <li><a href="{% url 'shop:face_list' 'Обличчя'%}">Обличчя</a></li>
-                            <li><a href="{% url 'shop:body_list' 'Тіло'%}">Тіло</a></li>
-                            <li><a href="#">Вітаміни</a></li>
+                            <li><a href="{% url 'shop:product_list' 'Обличчя'%}">Обличчя</a></li>
+                            <li><a href="{% url 'shop:product_list' 'Тіло'%}">Тіло</a></li>
+                            <li><a href="{% url 'shop:product_list' 'Вітаміни'%}">Вітаміни</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="./product-details.html">Product Details</a></li>
@@ -212,7 +212,7 @@
                             {% if user.is_authenticated %}
                                 <li><a href="{% url 'account' %}">Мій Акаунт</a></li>
                             {% else %}
-                                <li><a href="#">Мій Акаунт</a></li>
+                                <li><a href="{% url 'login' %}">Мій Акаунт</a></li>
                             {% endif %}
                             <li><a href="#">Orders Tracking</a></li>
                             <li><a href="#">Checkout</a></li>

@@ -1,7 +1,7 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{% block content %}}
+{% block content %}
 
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> Головна</a>
-                        <a href="{% url 'shop:face_list' category_name=category.name %}">{{ category.name }}</a>
+                        <a href="{% url 'shop:product_list' category_name=category.name %}">{{ category.name }}</a>
                         <span>{{ product.name }}</span>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                             <i class="fa fa-star"></i>
                             <span>( 138 reviews )</span>
                         </div>
-                        <div class="product__details__price">{{ product.price }} грн.<span>$ 83.0</span></div>
+                        <div class="product__details__price">{{product.price}} грн.</div>
                         <p>{{ product.mini_description }}</p>
                         <div class="product__details__button">
                             <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
@@ -72,7 +72,7 @@
                             </form>
                             <ul>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
+                                <li><a data-toggle="tab" href="#tabs-3"><span class="icon_adjust-horiz"></span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                                 <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Спосіб застосування</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Відгуки ( 2 )</a>
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Відгуки({{ review_count }})</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -100,22 +100,85 @@
                                 <p>{{ product.specification}}</p>
                             </div>
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <h6>Відгуки ( 2 )</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
+                                <h6>Відгуки</h6>
+                                <form action="{% url 'shop:add_review' product.id %}" method="post" class="mt-4">
+                                    {% csrf_token %}
+                                    <div class="form-group editContent">
+                                        <textarea class="form-control border" rows="3" name="text" id="contactcomment"
+                                                  placeholder="Залишити відгук *" required=""></textarea>
+                                    </div>
+                                    <div class="d-sm-flex">
+                                        <div class="col-sm-6 form-group p-0 editContent">
+                                            <input type="text" class="form-control border" name="name" value="{{ user_data.first_name }}"
+                                                   placeholder="Ваше ім'я *" id="contactusername" required="">
+                                        </div>
+                                        <div class="col-sm-6 form-group ml-sm-3 editContent">
+                                            <input type="email" class="form-control border" name="email" value="{{ user_data.email }}"
+                                                   placeholder="Ваш email *" id="contactemail" required="">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="mt-3 btn site-btn btn-block py-3">Надрукувати</button>
+                                </form>
+                                <br>
+
+                                {% for review in product.reviews_set.all %}
+                                    <div class="media-body mt-4">
+                                        <h5 class="mt-0 editContent">{{ review.name }}</h5>
+                                        <p class="mt-2 editContent">{{ review.text }}</p>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {% if recommended_products %}
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="related__title">
+                        <h5>З цим, також купують</h5>
+                    </div>
+                </div>
+                {% for p in recommended_products %}
+
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic" style="background-size: cover;">
+                            <a href="{{ p.get_absolute_url }}">
+                                <img src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" alt="Product Image">
+                            </a>
+
+                            <ul class="product__hover">
+                                <li><a href="{{ p.image.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li>
+                                    <a>
+                                        <form method="post" action="{% url 'cart:cart_add' p.id %}">
+                                            {% csrf_token %}
+                                            <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
+                                        </form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">{{ p.name }}</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">{{p.price}} грн.</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="related__title">
@@ -126,16 +189,26 @@
 
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{ related_product.image.url }}" style="background-size: cover;">
-                            <div class="label new">New</div>
+                        <div class="product__item__pic" style="background-size: cover;">
+                            <a href="{{ related_product.get_absolute_url }}">
+                                <img src="{% if related_product.image %}{{ related_product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" alt="Product Image">
+                            </a>
+
                             <ul class="product__hover">
                                 <li><a href="{{ related_product.image.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                <li>
+                                    <a>
+                                        <form method="post" action="{% url 'cart:cart_add' related_product.id %}">
+                                            {% csrf_token %}
+                                            <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
+                                        </form>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div class="product__item__text">
-                            <h6><a href="#">{{ product.name }}</a></h6>
+                            <h6><a href="#">{{ related_product.name }}</a></h6>
                             <div class="rating">
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
@@ -143,7 +216,7 @@
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">{{related_product.price}} грн.</div>
                         </div>
                     </div>
                 </div>
@@ -152,7 +225,6 @@
         </div>
     </section>
     <!-- Product Details Section End -->
-
 
 
 {% endblock %}

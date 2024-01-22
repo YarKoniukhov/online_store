@@ -94,10 +94,44 @@
                                 <input type="text" value="{{ user_data.department_np|default:'не указано' }}" readonly>
                             </div>
                         </div>
-                        <br>
-                        &nbsp;&nbsp;&nbsp;<button type="submit" class="site-btn site-btn-link" formaction="{% url 'edit' %}">редагувати дані</button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button type="submit" class="site-btn site-btn-link" formaction="{% url 'password_change' %}">змінити пароль</button>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="site-btn site-btn-link" formaction="{% url 'edit' %}">редагувати дані</button>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="site-btn site-btn-link" formaction="{% url 'password_change' %}">змінити пароль</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="checkout__order">
+                        <h5>ВАШІ ОСТАННІ ЗАМОВЛЕННЯ </h5>
+                        <div class="checkout__order__product">
+                            <ul>
+                                {% for order in user_orders %}
+                                <li>
+                                    <a href="{% url 'order_detail' order_id=order.id %}" target="_blank">
+                                    <div class="checkout__order__product">
+                                        <span class="top__text__center">Замовлення №{{order.id}}</span><br>
+                                        <span class="top__text">Дата замовлення </span>
+                                        <span class="top__text__right">{{ order.created|date:"d-M-Y" }}</span><br>
+                                        <span class="top__text">Товари:</span><br>
+                                        <ul>
+                                            {% for item in order.items.all %}
+                                            <li>
+                                                * {{ item.product.name }}
+                                                <span class="top__text__right">{{ item.quantity }} шт.</span>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        <span class="top__text">Сума замовлення </span>
+                                        <span class="top__text__right">{{ order.get_total_cost|floatformat:2 }} грн.</span><br>
+                                    </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -105,7 +139,6 @@
     </div>
 </section>
 <!-- Checkout Section End -->
-
 
 
 {% endblock %}

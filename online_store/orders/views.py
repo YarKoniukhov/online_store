@@ -3,19 +3,18 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
-from .tasks import order_created
 from django.urls import reverse
 from django.conf import settings
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse
 from django.template.loader import render_to_string
 import weasyprint
-from pathlib import Path
 import os
 
 
 def order_create(request):
     cart = Cart(request)
     user_data = None
+    order = None  # Инициализация переменной заказа
 
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
@@ -29,6 +28,9 @@ def order_create(request):
             # Добавим обработку поля для примечания
             order.order_notes = form.cleaned_data.get('order_notes', '')  # Получаем значение примечания из формы
 
+            if cart.coupon:
+                order.coupon = cart.coupon
+                order.discount = cart.coupon.discount
             order.save()
 
             for item in cart:
@@ -62,7 +64,14 @@ def order_create(request):
             form = OrderCreateForm(initial=user_data)
         else:
             form = OrderCreateForm()
-    return render(request, 'orders/checkout.html', {'cart': cart, 'user_data': user_data, 'form': form})
+
+    context = {
+        'cart': cart,
+        'user_data': user_data,
+        'form': form,
+    }
+
+    return render(request, 'orders/checkout.html', context)
 
 
 @staff_member_required

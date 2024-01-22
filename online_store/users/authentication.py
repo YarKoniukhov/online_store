@@ -1,4 +1,3 @@
-# from django.contrib.auth.models import User
 from users.models import User as User_profile
 from users.models import User  # Убедитесь, что путь к вашей модели правильный
 

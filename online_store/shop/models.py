@@ -123,11 +123,5 @@ class Reviews(models.Model):
         verbose_name = 'Відгук'
         verbose_name_plural = 'Відгуки'
 
-"""
-class Image(models.Model):
-    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='product_images/%Y/%m/%d', blank=True)
-
     def __str__(self):
-        return self.image.name
-"""
+        return f'{self.name} - {self.product}'

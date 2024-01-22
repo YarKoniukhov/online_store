@@ -30,10 +30,10 @@
                             <h4>Група товару</h4>
                         </div>
                         <div class="size__list color__list">
-                            <form id="filter-form" action="{% url 'shop:face_list' category_name %}" method="GET">
+                            <form id="filter-form" action="{% url 'shop:product_list' category_name %}" method="GET">
                                 {% for subcategory in subcategories %}
                                 <label for="subcategory-{{ subcategory.id }}">
-                                    {{ subcategory.name }}
+                                    {{ subcategory.name|title }}
                                     <input type="checkbox" id="subcategory-{{ subcategory.id }}" name="subcategory" value="{{ subcategory.id }}" class="filter-checkbox subcategory-checkbox" {% if subcategory.id|stringformat:"s" in selected_subcategories %}checked{% endif %}>
                                     <span class="checkmark"></span>
                                 </label>
@@ -54,181 +54,44 @@
                                     {% endfor %}
                                 </div>
 
-                                <button type="submit" style="display: none;"></button>
-                            </form>
-
-                            <script>
-                                const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
-                                const filterForm = document.getElementById('filter-form');
-
-                                filterCheckboxes.forEach(checkbox => {
-                                    checkbox.addEventListener('change', function() {
-                                        filterForm.submit();
-                                    });
-                                });
-
-                            </script>
-                            <br>
-                            <div class="sidebar__filter">
-                                <div class="section-title">
-                                    <h4>Пошук за ціною</h4>
-                                </div>
-                                <br>
-                                <div class="filter-range-wrap">
-                                    <div class="price-range" data-min="{{ min_price }}" data-max="{{ max_price }}"></div>
-                                    <div class="range-slider">
-                                        <div class="price-input">
-                                            <p>Ціна:</p>
-                                            <input type="text" id="minamount" name="min_price" value="{{ min_price }}">
-                                            <input type="text" id="maxamount" name="max_price" value="{{ max_price }}">
-                                        </div>
+                                <div class="sidebar__prices">
+                                    <div class="section-title">
+                                        <br>
+                                        <h4>Пошук за ціною</h4>
                                     </div>
+                                    {% for price_interval in price_intervals %}
+                                    <label for="price-{{ price_interval.min }}-{{ price_interval.max }}">
+                                        {{ price_interval.label }}
+                                        <input type="checkbox" id="price-{{ price_interval.min }}-{{ price_interval.max }}" name="price_range" value="{{ price_interval.min }}-{{ price_interval.max }}" class="filter-checkbox" {% if price_interval.range_selected %}checked{% endif %}>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    {% endfor %}
                                 </div>
-                            </div>
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-                            <script>
-                                $(document).ready(function () {
-                                    var minPrice = {{ min_price }};
-                                    var maxPrice = {{ max_price }};
+                                <button type="submit" style="display: none;"></button>
 
-                                    // Считываем значения из cookies
-                                    var savedMinPrice = getCookie("min_price");
-                                    var savedMaxPrice = getCookie("max_price");
+                                <script>
+                                    const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+                                    const filterForm = document.getElementById('filter-form');
 
-                                    if (savedMinPrice !== null && savedMaxPrice !== null) {
-                                        minPrice = parseInt(savedMinPrice);
-                                        maxPrice = parseInt(savedMaxPrice);
-                                    }
-
-                                    // Получаем текущий путь URL
-                                    var currentPath = window.location.pathname;
-
-                                    // Проверяем, соответствует ли текущий путь нужной категории
-                                    if (currentPath === '/oblichcha/') {
-                                        // Сбрасываем значения бегунков и полей с ценами для этой категории
-                                        minPrice = {{ min_price }};
-                                        maxPrice = {{ max_price }};
-                                    }
-
-                                    // Устанавливаем начальные значения бегунков и полей с ценами
-                                    var priceRange = $(".price-range").slider({
-                                        range: true,
-                                        min: {{ min_price }},
-                                        max: {{ max_price }},
-                                        values: [minPrice, maxPrice],
-                                        slide: function (event, ui) {
-                                            $("#minamount").val(ui.values[0]);
-                                            $("#maxamount").val(ui.values[1]);
-                                        },
-                                        stop: function (event, ui) {
-                                            setCookie("min_price", ui.values[0]);
-                                            setCookie("max_price", ui.values[1]);
-                                            filterProducts(ui.values[0], ui.values[1]);
-                                        }
+                                    filterCheckboxes.forEach(checkbox => {
+                                        checkbox.addEventListener('change', function() {
+                                            filterForm.submit();
+                                        });
                                     });
 
-                                    // Функция для сброса всех фильтров
-                                    function resetFilters() {
-                                        // Сбрасываем значения бегунков и текстовых полей для цен
-                                        minPrice = {{ min_price }};
-                                        maxPrice = {{ max_price }};
-                                        priceRange.slider("values", [minPrice, maxPrice]);
-                                        $("#minamount").val(minPrice);
-                                        $("#maxamount").val(maxPrice);
-
-                                        // Сбрасываем фильтры по категориям товаров и брендам
-                                        $(".filter-checkbox").prop("checked", false);
-
-                                        filterProducts(minPrice, maxPrice);
-                                    }
-
-                                    $(".reset-filters-link").on("click", function (e) {
-                                        e.preventDefault();
-                                        resetFilters();
-                                    });
-
-                                    // Запоминаем начальные значения бегунков при загрузке страницы
-                                    setCookie("min_price", minPrice);
-                                    setCookie("max_price", maxPrice);
-
-                                    $("#minamount").on("input", function () {
-                                        filterProducts($(this).val(), $("#maxamount").val());
-                                    });
-
-                                    $("#maxamount").on("input", function () {
-                                        filterProducts($("#minamount").val(), $(this).val());
-                                    });
-
-                                    $(".filter-checkbox").on("change", function () {
-                                        filterProducts($("#minamount").val(), $("#maxamount").val());
-                                    });
-
-                                    // Устанавливаем начальные значения бегунков
-                                    $("#minamount").val(minPrice + " грн.");
-                                    $("#maxamount").val(maxPrice + " грн.");
-
-                                    // Считываем параметры из URL и обновляем бегунки и текстовые поля
-                                    var urlParams = new URLSearchParams(window.location.search);
-                                    var urlMinPrice = urlParams.get('min_price');
-                                    var urlMaxPrice = urlParams.get('max_price');
-
-                                    if (urlMinPrice !== null && urlMaxPrice !== null) {
-                                        minPrice = parseInt(urlMinPrice);
-                                        maxPrice = parseInt(urlMaxPrice);
-
-                                        priceRange.slider("values", [minPrice, maxPrice]);
-                                        $("#minamount").val(minPrice + " грн.");
-                                        $("#maxamount").val(maxPrice + " грн.");
-                                    }
-
-
-                                    $("#minamount").on("input", function () {
-                                        filterProducts($(this).val(), $("#maxamount").val());
-                                    });
-
-                                    $("#maxamount").on("input", function () {
-                                        filterProducts($("#minamount").val(), $(this).val());
-                                    });
-
-                                    $(".filter-checkbox").on("change", function () {
-                                        filterProducts($("#minamount").val(), $("#maxamount").val());
-                                    });
-
-                                    function filterProducts(minPrice, maxPrice) {
-                                        var formData = $("#filter-form").serialize();
-                                        formData += "&min_price=" + encodeURIComponent(minPrice) + "&max_price=" + encodeURIComponent(maxPrice);
-                                        var url = "{% url 'shop:face_list' category_name %}?" + formData;
-                                        window.location.href = url;
-                                    }
-
-                                    function setCookie(name, value) {
-                                        document.cookie = name + "=" + value + "; path=/";
-                                    }
-
-                                    function getCookie(name) {
-                                        var value = "; " + document.cookie;
-                                        var parts = value.split("; " + name + "=");
-                                        if (parts.length === 2) {
-                                            return parts.pop().split(";").shift();
-                                        }
-                                        return null;
-                                    }
-                                });
-                            </script>
+                                </script>
 
                             <!-- Сброс фильтров -->
+                                <br>
                             <div class="selected-filter-list__item cancel-filter active">
-                                <a href="{% url 'shop:face_list' category_name=category.name %}?min_price=&max_price=" class="reset-filters-link">
+                                <a href="{% url 'shop:product_list' category_name=category.name %}?min_price=&max_price=" class="reset-filters-link">
                                     <span>Прибрати фільтри</span>
                                 </a>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-9 col-md-9">
                 <div class="row">
                     {% for product in products %}
@@ -238,7 +101,6 @@
                                 <a href="{{ product.get_absolute_url }}">
                                     <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" alt="Product Image">
                                 </a>
-                                <div class="label new">New</div>
                                 <ul class="product__hover">
                                     <li>
                                         <a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"
@@ -246,10 +108,9 @@
                                     <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                     <li>
                                         <a>
-                                            <form method="post"
-                                                  action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
+                                            <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
                                                 {% csrf_token %}
-    <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
+                                                <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
                                             </form>
                                         </a>
 
@@ -276,15 +137,27 @@
                     <!-- Здесь вывод информации о товаре -->
                     {% endfor %}
                 </div>
-            </div>
-            <div class="col-lg-9 col-md-9">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="pagination__option">
-                            <a href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#"><i class="fa fa-angle-right"></i></a>
+                <!-- Пагинация -->
+                <div class="col-lg-9 col-md-9">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <div class="pagination__option">
+                                {% if products.has_previous %}
+                                    <a href="?page=1">&laquo;</a>
+                                    <a href="?page={{ products.previous_page_number }}">&lsaquo;</a>
+                                {% endif %}
+                                {% for i in products.paginator.page_range %}
+                                    {% if products.number == i %}
+                                        <a href="?page={{ i }}" style="background-color: #ca1515; color: white;">{{ i }}</a>
+                                    {% else %}
+                                        <a href="?page={{ i }}">{{ i }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if products.has_next %}
+                                    <a href="?page={{ products.next_page_number }}">&rsaquo;</a>
+                                    <a href="?page={{ products.paginator.num_pages }}">&raquo;</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -295,9 +168,3 @@
 <!-- Shop Section End -->
 
 {% endblock %}
-
-
-
-
-
-

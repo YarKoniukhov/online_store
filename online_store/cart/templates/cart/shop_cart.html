@@ -19,8 +19,6 @@
     <!-- Breadcrumb End -->
 
     <!-- Shop Cart Section Begin -->
-
-
     <section class="shop-cart spad">
         <div class="container">
             <div class="row">
@@ -79,7 +77,6 @@
                     <div class="cart__btn">
                         <a href="{% if request.session.last_visited_category %}{% url 'shop:product_list' category_name=request.session.last_visited_category %}
                             {% else %}{% url 'shop:index' %}{% endif %}" class="button light">Продовжити покупки</a>
-
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -94,8 +91,9 @@
                 <div class="col-lg-6">
                     <div class="discount__content">
                         <h6>Промокод</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Введіть промокод">
+                        <form action="{% url 'coupons:apply' %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="code" placeholder="Введіть промокод">
                             <button type="submit" class="site-btn">Застосувати</button>
                         </form>
                     </div>
@@ -104,8 +102,13 @@
                     <div class="cart__total__procced">
                         <h6>Загальна сума</h6>
                         <ul>
-                            <li>Підсумок <span>{{ cart.get_total_price }} грн.</span></li>
-                            <li>Разом <span>{{ cart.get_total_price }} грн.</span></li>
+                            <li>Разом <span>{{ cart.get_total_price|floatformat:2 }} грн.</span></li>
+                            {% if cart.coupon %}
+                                <li>Промокод <span>{{ cart.coupon.code }} -{{ cart.coupon.discount }}%</span></li>
+                            {% endif %}
+                            <li>Знижка <span>{{ cart.get_discount|floatformat:2 }} грн.</span></li>
+                            <li>Підсумок <span>{{ cart.get_total_price_after_discount|floatformat:2 }} грн.</span></li>
+
                         </ul>
                         <a href="{% url 'orders:order_create' %}" class="primary-btn">Оформити замовлення</a>
                     </div>

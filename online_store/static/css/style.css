@@ -606,7 +606,7 @@ ol {
 -----------------------*/
 
 .trend {
-	padding-top: 80px;
+	padding-top: 20px;
 	padding-bottom: 50px;
 }
 
@@ -1087,14 +1087,20 @@ ol {
 	-webkit-box-align: center;
 	-ms-flex-align: center;
 	align-items: center;
-	padding-left: 30px;
-	margin-bottom: 10px;
+	padding-left: 20px;
+	margin-bottom: 0px;
 	margin-right: 10px;
+	background-size: cover; /* Используйте contain, чтобы изображение целиком помещалось */
+    background-position: center; /* Выравнивание по центру */
+    background-repeat: no-repeat;
 }
 
 .categories__item.categories__large__item {
-	height: 638px;
+	height: 628px;
 	padding-left: 70px;
+	background-size: cover; /* или contain в зависимости от требуемого эффекта */
+    background-position: center; /* настройте положение изображения */
+    background-repeat: no-repeat;
 }
 
 .categories__item.categories__large__item .categories__text {
@@ -1106,21 +1112,19 @@ ol {
 }
 
 .categories__text h1 {
-	font-family: "Cookie", cursive;
-	color: #111111;
+    font-family: "Times New Roman", serif;
+	color: #11111;
 	margin-bottom: 5px;
 }
 
 .categories__text h4 {
-	color: #111111;
+	color: #11111;
 	font-weight: 700;
+	margin-top: 100px; /* Измените значение по вашему усмотрению */
+
 }
 
 .categories__text p {
-	margin-bottom: 10px;
-}
-
-.categories__text a {
 	font-size: 14px;
 	color: #111111;
 	text-transform: uppercase;
@@ -1130,7 +1134,7 @@ ol {
 	display: inline-block;
 }
 
-.categories__text_log a {
+.categories__text_log p {
 	font-size: 10px;
 	color: #111111;
 	text-transform: uppercase;
@@ -1140,7 +1144,7 @@ ol {
 	display: inline-block;
 }
 
-.categories__text_log a:after {
+.categories__text_log p:after {
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -1150,7 +1154,7 @@ ol {
 	content: "";
 }
 
-.categories__text a:after {
+.categories__text p:after {
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -1590,7 +1594,6 @@ ol {
 	display: block;
 	padding-left: 20px;
 	font-size: 14px;
-	text-transform: uppercase;
 	color: #444444;
 	position: relative;
 	cursor: pointer;
@@ -2555,21 +2558,21 @@ ol {
 }
 
 .checkout__order__product ul li span {
-	font-size: 14px;
+	font-size: 13px;
 	color: #111111;
 	font-weight: 600;
 	float: right;
 }
 
 .checkout__order__product ul li .top__text {
-	font-size: 16px;
+	font-size: 13px;
 	color: #111111;
 	font-weight: 600;
 	float: left;
 }
 
 .checkout__order__product ul li .top__text__right {
-	font-size: 16px;
+	font-size: 13px;
 	color: #111111;
 	font-weight: 600;
 	float: right;
@@ -3831,15 +3834,15 @@ ol {
     display: inline-block;
     padding: 6px 18px;
     font-size: 14px; /* Уменьшенный размер шрифта */
-    background-color: #DCDCDC; /* Цвет фона кнопки */
-    color: #444444; /* Цвет текста кнопки */
+    background-color: #cc0000; /* Цвет фона кнопки */
+    color: #fff; /* Цвет текста кнопки */
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .reset-filters-link:hover {
-    background-color: #cc0000; /* Цвет фона кнопки при наведении */
+    background-color: #050505; /* Цвет фона кнопки при наведении */
     color: #fff; /* Цвет текста кнопки при наведении */
 }
 
