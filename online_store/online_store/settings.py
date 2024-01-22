@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'payment',
+    'coupons',
 ]
 
 
@@ -222,6 +223,11 @@ CSRF_TRUSTED_ORIGINS = [
     # Другие доверенные источники, если есть
 ]
 
+# настроечные параметры Redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
+
 
 """
 technical aspects
@@ -245,4 +251,8 @@ stripe listen --forward-to localhost:8000/payment/webhook/
 
 ngrok
 ngrok http 8000
+
+redis
+docker run -it --rm --name redis -p 6379:6379 redis
+
 """

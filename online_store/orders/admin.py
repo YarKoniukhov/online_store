@@ -64,8 +64,8 @@ order_pdf.short_description = 'Рахунок'
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'first_name', 'last_name', 'phone', 'email', 'city',
-                    'department_np', 'order_notes', 'order_total', 'paid', order_payment,
-                    'created', order_detail, order_pdf]
+                    'department_np', 'order_notes', 'order_total', 'paid',
+                    order_payment, 'created', order_detail, order_pdf]
 
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline]
@@ -77,6 +77,5 @@ class OrderAdmin(admin.ModelAdmin):
         return total_cost
 
     order_total.short_description = 'Сума замовлення'  # Название для колонки в административной панели
-
 
 

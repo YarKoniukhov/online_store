@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 from shop.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm, CartUpdateForm
+from coupons.forms import CouponApplyForm
 
 
 @require_POST
@@ -41,13 +42,16 @@ def cart_detail(request):
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True, })
 
+    coupon_apply_form = CouponApplyForm()
+
     # Используйте информацию о категории при формировании URL
-    continue_shopping_url = reverse('shop:face_list', args=[category_name])
+    continue_shopping_url = reverse('shop:product_list', args=[category_name])
 
     context = {
         'cart': cart,
         'category_name': category_name,
         'continue_shopping_url': continue_shopping_url,
+        'coupon_apply_form': coupon_apply_form,
     }
 
     return render(request, 'cart/shop_cart.html', context)
