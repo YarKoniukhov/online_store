@@ -40,8 +40,10 @@ def product_list(request, category_name, brand_id=None):
     category = get_object_or_404(Category, name=category_name)
     products = Product.objects.filter(category=category).order_by('-created')
     subcategories = category.subcategories.all()
+    # Получаем бренды, связанные с продуктами из категории "Обличчя"
     brands = Brand.objects.filter(product__category=category).distinct()
 
+    # Получаем выбранные подкатегории из запроса
     selected_subcategories = request.GET.getlist('subcategory')
     all_subcategories_selected = 'all' in request.GET
 
@@ -49,16 +51,21 @@ def product_list(request, category_name, brand_id=None):
     all_brands_selected = 'all_brands' in request.GET
 
     if all_subcategories_selected:
+        # Если выбраны "Всі категорії", сбросить выбранные подкатегории
         selected_subcategories = [str(subcategory.id) for subcategory in subcategories]
 
     if all_brands_selected:
         selected_brands = [str(brand.id) for brand in brands]
 
+    # Объединяем фильтры для подкатегорий и брендов
     query = Q()
 
+    # Применяем фильтрацию по подкатегориям
     if selected_subcategories:
         query &= Q(subcategory__id__in=selected_subcategories)
+        # products = products.filter(subcategory__id__in=selected_subcategories)
 
+    # Применяем фильтрацию по брендам
     if selected_brands:
         query &= Q(brand__id__in=selected_brands)
 

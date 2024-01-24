@@ -1,7 +1,7 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{% block content %}
+{% block content %}}
 
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> Головна</a>
-                        <a href="{% url 'shop:product_list' category_name=category.name %}">{{ category.name }}</a>
+                        <a href="{% url 'shop:face_list' category_name=category.name %}">{{ category.name }}</a>
                         <span>{{ product.name }}</span>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                             <i class="fa fa-star"></i>
                             <span>( 138 reviews )</span>
                         </div>
-                        <div class="product__details__price">{{product.price}} грн.</div>
+                        <div class="product__details__price">{{ product.price }} грн.<span>$ 83.0</span></div>
                         <p>{{ product.mini_description }}</p>
                         <div class="product__details__button">
                             <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
@@ -225,6 +225,7 @@
         </div>
     </section>
     <!-- Product Details Section End -->
+
 
 
 {% endblock %}
