@@ -1,0 +1,73 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Платіж виконано успішно{% endblock %}
+{% block content %}
+
+
+<!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+<style>
+    .center-form-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+        .checkout {
+            display: flex;
+            justify-content: center;
+        }
+
+        .checkout .col-lg-8 {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    .col-lg-12.text-center {
+        margin-bottom: 10px; /* Новый отступ снизу */
+    }
+
+</style>
+
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> Головна</a>
+                    <span>Ваш платіж успішно проведено </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<center>
+    <section class="checkout spad">
+        <div class="container">
+            <form method="post" action="{% url 'shop:index' %}" class="checkout__form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h5>Ваш платіж успішно проведено</h5>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="site-btn"
+                                        style="width: 36%; text-align: center; margin-top: 10px;">На головну
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</center>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Оплата замовлення{% endblock %}
+{% block content %}
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> Головна</a>
+                    <span>Огляд замовлення </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Cart Section Begin -->
+    <section class="shop-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shop__cart__table">
+                        <h2>Огляд замовлення</h2>
+                        <br>
+                        <br>
+                        <form method="post" action="#" id="update-cart-form">
+                        {% csrf_token %}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Товар</th>
+                                        <th>Ціна</th>
+                                        <th>Кількість</th>
+                                        <th>Всього</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                        {% with product=item.product %}
+                                            <tr>
+                                                <td class="cart__product__item">
+                                                    <img src="{% if product.image %}{{ product.image.url }}
+                                                        {% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"
+                                                         style="width: 100px; height: auto;">
+                                                    <div class="cart__product__item__title">
+                                                        <h5>{{ item.product.name }}</h5>
+                                                    </div>
+                                                </td>
+                                                <td class="cart__price">{{item.price}} грн.</td>
+                                                <td class="cart__quantity" style="text-align: center;">{{ item.quantity }}</td>
+                                                <td class="cart__total">{{ item.get_cost }} грн.</td>
+                                            </tr>
+                                        {% endwith %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 offset-lg-8">
+                    <div class="cart__total__procced">
+                        <h6>Загальна сума</h6>
+                        <ul>
+                            <li>Підсумок <span>{{ order.get_total_cost_before_discount|floatformat:2 }} грн.</span></li>
+                            {% if cart.coupon %}
+                            <li>Знижка {{ order.discount }}%
+                                <span>{{ order.get_discount|floatformat:2 }} грн.</span></li>
+                            {% endif %}
+                            <li>Разом <span>{{ order.get_total_cost|floatformat:2 }} грн.</span></li>
+                        </ul>
+                        <form action="{% url 'payment:process' %}" method="post">
+                            <input type="submit" class="primary-btn" value="            Сплатити            ">
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Shop Cart Section End -->
+
+{% endblock %}
+
+
+
+

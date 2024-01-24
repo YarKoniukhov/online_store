@@ -1,0 +1,162 @@
+<html>
+
+<head>
+  <title>SUNRISE BEAUTYBAR Рахунок {{ order.id }} {{ block.super }}</title>
+  <style>
+    /* Подключение шрифта Avenir Next */
+    @import url('https://fonts.googleapis.com/css2?family=Avenir+Next:wght@700;900&display=swap');
+
+    /* Применение шрифта к заголовкам */
+    .big-spacing {
+      font-family: 'Avenir Next', sans-serif;
+      font-weight: 800; /* Указываем жирное начертание */
+      margin-bottom: 2px; /* Минимальный отступ между строками */
+
+    }
+    .ultra-light {
+      font-family: 'Avenir Next', sans-serif;
+      font-weight: 300; /* Ultra Light (самый легкий вариант) */
+            margin-top: 2px; /* Минимальный отступ между строками */
+
+    }
+    body {
+      font-size: 15px; /* Уменьшение размера шрифта */
+      line-height: 1; /* Уменьшение межстрочного интервала */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+
+  </style>
+</head>
+
+<body>
+<div class="page-container">
+  Page
+  <span class="page"></span>
+  of
+  <span class="pages"></span>
+</div>
+
+<div class="logo-container">
+  <h1 class="big-spacing">SUNRISE </h1>
+  <h1 class="ultra-light">beautybar</h1>
+</div>
+
+<table class="invoice-info-container">
+  <tr>
+    <td rowspan="2" class="client-name">
+      {% if order.username %}
+        {{ order.username }} {{ order.last_name }}<br>
+      {% else %}
+        {{ order.first_name }} {{ order.last_name }}<br>
+      {% endif %}
+    </td>
+    <td>
+      {{ order.phone }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      {{ order.city }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Дата оформлення: <strong>{{ order.created|date:"d F Y" }}</strong>
+    </td>
+    <td>
+      Відділення НП No: {{order.department_np}}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Рахунок No: <strong>{{ order.id }}</strong>
+    </td>
+    <td>
+      {{ order.email }}
+    </td>
+  </tr>
+</table>
+
+<table class="line-items-container">
+  <thead>
+    <tr>
+      <th>ТОВАР</th>
+      <th>КІЛЬКІСТЬ</th>
+      <th>ЦІНА</th>
+      <th>ВСЬОГО</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in order.items.all %}
+      <tr>
+        <td>{{ item.product.name }}</td>
+        <td class="center">{{ item.quantity }}</td>
+        <td class="center">{{item.price}} грн</td>
+        <td class="bold">{{item.get_cost}} грн</td>
+      </tr>
+    {% endfor %}
+
+    {% if order.coupon %}
+      <tr class="spacer-row">
+        <td colspan="4">&nbsp;</td> <!-- Создание пустой строки -->
+      </tr>
+      <tr class="subtotal">
+        <td colspan="2"></td>
+        <td class="bold right">Загальна вартість:</td>
+        <td class="bold">{{ order.get_total_cost_before_discount|floatformat:2 }} грн</td>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+        <td class="bold right">Знижка {{ order.discount }}% :</td>
+        <td class="bold">{{ order.get_discount|floatformat:2 }} грн</td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+
+<table class="line-items-container has-bottom-border">
+  <thead>
+    <tr>
+      <th>Платіжна інформація</th>
+      <th>Дата оплати</th>
+      <th>СУМА ДО СПЛАТИ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="payment-info">
+        <div>
+          Транзакція No: <br>
+          <strong>{{ transaction_info.stripe_id }}</strong>
+        </div>
+      </td>
+      <td class="payment-info">{{ updated }}</td>
+
+      <td class="large total">{{ order.get_total_cost|floatformat:2 }} грн</td>
+    </tr>
+  </tbody>
+</table>
+<span class="{% if order.paid %}paid{% else %}pending{% endif %}">
+  {% if order.paid %}Сплачено{% else %}Очікує на оплату{% endif %}
+</span>
+
+<div class="footer">
+  <div class="footer-info">
+    <span>sunrisebeautybar.info@gmail.com</span> |
+    <span>+38 (067) 000-00-00</span> |
+    <span>sunrisebeautybar.com.ua</span>
+  </div>
+  <div class="footer-thanks">
+    <img src="https://github.com/anvilco/html-pdf-invoice-template/raw/main/img/heart.png" alt="heart">
+    <span>Дякуємо!</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Оформлення замовлення{% endblock %}
+{% block content %}
+
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'shop:index' %}"><i class="fa fa-home"></i> Головна</a>
+                        <span>Оформлення замовлення</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="{% url 'cart:cart_detail' %}">
+                        Маєш промокод?</a> Натисніть, щоб ввести свій код.
+                    </h6>
+                </div>
+            </div>
+            <form action="#" class="checkout__form" method="post">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h5>Деталі замовлення</h5>
+                        <div class="row">
+                           <div class="col-lg-6 col-md-6 col-sm-6">
+                               <div class="checkout__form__input">
+                                   <p>Ваше ім'я <span>*</span></p>
+                                   <input type="text" name="first_name" maxlength="50" required id="id_first_name"
+                                          value="{% if user_data.first_name %}{{ user_data.first_name }}{% else %}{{ user_data.username }}{% endif %}">
+                               </div>
+                           </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Ваше прізвище <span>*</span></p>
+                                    <input type="text" name="last_name" maxlength="50" required id="id_last_name" value="{{ user_data.last_name|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="checkout__form__input">
+                                    <p>Місто <span>*</span></p>
+                                    <input type="text" name="city" maxlength="100" required id="id_city" value="{{ user_data.city|default:'' }}">
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Відділення нової пошти <span>*</span></p>
+                                    <input type="text" name="department_np" value="{{ user_data.department_np|default:'' }}" maxlength="250" required id="id_department_np">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Телефон <span>*</span></p>
+                                    <input type="text" name="phone" value="{{ user_data.phone|default:'' }}" maxlength="20" required id="id_phone" data-phone-pattern>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Email <span>*</span></p>
+                                    <input type="email" name="email" value="{{ user_data.email|default:'' }}" maxlength="254" required id="id_email">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="checkout__form__checkbox"></div>
+                                    <div class="checkout__form__input">
+                                        <p>Примітка до замовлення </p>
+                                        <input type="text" name="order_notes" placeholder="Примітка про ваше замовлення">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="checkout__order">
+                                <h5>ВАШЕ ЗАМОВЛЕННЯ </h5>
+                                <div class="checkout__order__product">
+                                    <ul>
+                                        <li>
+                                            <span class="top__text">Товар</span>
+                                            <span class="top__text__right">Всього</span>
+                                        </li>
+                                        {% for item in cart %}
+                                            <li>{{ item.quantity }}x {{ item.product.name }}
+                                                <span>{{ item.total_price }} грн.</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="checkout__order__total">
+                                    <ul>
+                                        <li>Підсумок <span>{{ cart.get_total_price|floatformat:2 }} грн.</span></li>
+                                        {% if cart.coupon %}
+                                            <li>Знижка {{ cart.coupon.discount }}%<span>{{ cart.get_discount|floatformat:2 }} грн.</span></li>
+                                        {% endif %}
+                                        <li>Разом <span>{{ cart.get_total_price_after_discount|floatformat:2 }} грн.</span></li>
+                                    </ul>
+                                </div>
+                                <div class="checkout__order__widget"></div>
+                                <button type="submit" class="site-btn">Розмістити замовлення</button>
+                            </div>
+                        </div>
+                    </div>
+                {% csrf_token %}
+                </form>
+            </div>
+        </section>
+        <!-- Checkout Section End -->
+
+        <!-- Search Begin -->
+        <div class="search-model">
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="search-close-switch">+</div>
+                <form class="search-model-form">
+                    <input type="text" id="search-input" placeholder="Search here.....">
+                </form>
+            </div>
+        </div>
+        <!-- Search End -->
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                  var eventCalllback = function(e) {
+                    var el = e.target,
+                      clearVal = el.dataset.phoneClear,
+                      pattern = el.dataset.phonePattern,
+                      matrix_def = "+38 (___) ___-__-__",
+                      matrix = pattern ? pattern : matrix_def,
+                      i = 0,
+                      def = matrix.replace(/\D/g, ""),
+                      val = e.target.value.replace(/\D/g, "");
+                    if (clearVal !== 'false' && e.type === 'blur') {
+                      if (val.length < matrix.match(/([\_\d])/g).length) {
+                        e.target.value = '';
+                        return;
+                      }
+                    }
+                    if (def.length >= val.length) val = def;
+                    e.target.value = matrix.replace(/./g, function(a) {
+                      return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a
+                    });
+                  }
+                  var phone_inputs = document.querySelectorAll('[data-phone-pattern]');
+                  for (let elem of phone_inputs) {
+                    for (let ev of ['input', 'blur', 'focus']) {
+                      elem.addEventListener(ev, eventCalllback);
+                    }
+                  }
+                });
+        </script>
+
+{% endblock %}
