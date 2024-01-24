@@ -30,7 +30,7 @@
                             <h4>Група товару</h4>
                         </div>
                         <div class="size__list color__list">
-                            <form id="filter-form" action="{% url 'shop:face_list' category_name %}" method="GET">
+                            <form id="filter-form" action="{% url 'shop:product_list' category_name %}" method="GET">
                                 {% for subcategory in subcategories %}
                                 <label for="subcategory-{{ subcategory.id }}">
                                     {{ subcategory.name }}
