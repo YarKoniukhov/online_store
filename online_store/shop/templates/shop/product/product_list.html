@@ -88,7 +88,6 @@
                                     <span>Прибрати фільтри</span>
                                 </a>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -106,16 +105,18 @@
                                 <ul class="product__hover">
                                     <li>
                                         <a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"
-                                           class="image-popup"><span class="arrow_expand"></span></a></li>
+                                           class="image-popup"><span class="arrow_expand"></span>
+                                        </a>
+                                    </li>
                                     <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <!-- <li><a href="#"><span class="icon_bag_alt"></span></a></li> -->
                                     <li>
                                         <a>
-                                            <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
-                                                {% csrf_token %}
-                                                <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
-                                            </form>
+                                            <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ product.category }}">
+                                            {% csrf_token %}
+                                            <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
+                                        </form>
                                         </a>
-
                                     </li>
                                 </ul>
                             </div>
@@ -170,9 +171,6 @@
 <!-- Shop Section End -->
 
 {% endblock %}
-
-
-
 
 
 
