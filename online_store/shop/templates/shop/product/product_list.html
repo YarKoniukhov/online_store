@@ -82,6 +82,7 @@
                                 </script>
 
                             <!-- Сброс фильтров -->
+                                <br>
                             <div class="selected-filter-list__item cancel-filter active">
                                 <a href="{% url 'shop:product_list' category_name=category.name %}?min_price=&max_price=" class="reset-filters-link">
                                     <span>Прибрати фільтри</span>
@@ -102,7 +103,6 @@
                                 <a href="{{ product.get_absolute_url }}">
                                     <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" alt="Product Image">
                                 </a>
-                                <div class="label new">New</div>
                                 <ul class="product__hover">
                                     <li>
                                         <a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"

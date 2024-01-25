@@ -56,7 +56,7 @@
                             <i class="fa fa-star"></i>
                             <span>( 138 reviews )</span>
                         </div>
-                        <div class="product__details__price">{{ product.price }} грн.<span>$ 83.0</span></div>
+                        <div class="product__details__price">{{product.price}} грн.</div>
                         <p>{{ product.mini_description }}</p>
                         <div class="product__details__button">
                             <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
