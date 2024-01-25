@@ -14,6 +14,7 @@ from pathlib import Path
 
 import django.core.mail.backends.console
 from dotenv import load_dotenv
+import dj_database_url
 
 
 load_dotenv()
@@ -31,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', '*']
+ALLOWED_HOSTS = ['', 'mysite.com', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -101,6 +102,9 @@ DATABASES = {
     }
 }
 
+db_from_env  = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -139,7 +143,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [STATIC_DIR]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 MEDIA_URL = '/media/'
