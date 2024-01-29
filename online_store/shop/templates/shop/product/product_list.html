@@ -96,43 +96,41 @@
             <div class="col-lg-9 col-md-9">
                 <div class="row">
                     {% for product in products %}
-                        <div class="col-lg-4 col-md-6">
-                            <div class="product__item">
-                                <div class="product__item__pic">
-                                    <a href="{{ product.get_absolute_url }}">
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" alt="Product Image">
-                                    </a>
-                                    <ul class="product__hover">
-                                        <li>
-                                            <a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"
-                                               class="image-popup"><span class="arrow_expand"></span>
-                                            </a>
-                                        </li>
-                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                        <!-- <li><a href="#"><span class="icon_bag_alt"></span></a></li> -->
-                                        <li>
-                                            <a>
-                                                <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ product.category }}">
-                                                    {% csrf_token %}
-                                                    <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
-                                                </form>
-                                            </a>
-                                        </li>
-                                    </ul>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic">
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}" alt="Product Image">
+                                </a>
+                                <ul class="product__hover">
+                                    <li>
+                                        <a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/shop/no_image.jpg' %}{% endif %}"
+                                           class="image-popup"><span class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li>
+                                        <a>
+                                            <form method="post" action="{% url 'cart:cart_add' product.id %}?category={{ category }}">
+                                                {% csrf_token %}
+                                                <span class="icon_bag_alt cart-add-button" onclick="this.parentElement.submit();"></span>
+                                            </form>
+                                        </a>
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
                                 </div>
-                                <div class="product__item__text">
-                                    <h6><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <div class="product__price">{{product.price}} грн.</div>
-                                </div>
+                                <div class="product__price">{{product.price}} грн.</div>
                             </div>
                         </div>
+                    </div>
                     {% empty %}
                         <img src="{% static 'img/shop/not_found.jpeg' %}" width="640" height="640"
                             style="display: block; margin: 0 auto;">
@@ -171,6 +169,9 @@
 <!-- Shop Section End -->
 
 {% endblock %}
+
+
+
 
 
 
