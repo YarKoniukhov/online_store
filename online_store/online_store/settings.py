@@ -11,10 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-
-import django.core.mail.backends.console
 from dotenv import load_dotenv
-import dj_database_url
 
 
 load_dotenv()
@@ -57,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -101,9 +99,6 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
-
-db_from_env  = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
 
 
 # Password validation
