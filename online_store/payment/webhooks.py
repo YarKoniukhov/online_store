@@ -40,6 +40,3 @@ def stripe_webhook(request):
             payment_completed.delay(order.id)
     return HttpResponse(status=200)
 
-
-
-

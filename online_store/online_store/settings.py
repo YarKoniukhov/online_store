@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import redis
 
 
 load_dotenv()
@@ -215,15 +216,27 @@ STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
 
 # Ngrok
-CSRF_TRUSTED_ORIGINS = [
+"""CSRF_TRUSTED_ORIGINS = [
     'https://765e-93-127-101-56.ngrok-free.app/'
     # Другие доверенные источники, если есть
-]
+]"""
 
-# настроечные параметры Redis
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 1
+
+# Парсим URI для Redis
+REDIS_URL = os.getenv('REDIS_URL')  # Получаем URI из переменной окружения
+# Создаем подключение к Redis
+redis_connection = redis.from_url(REDIS_URL)
+
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = 6379
+# REDIS_DB = 1
+
+# RABBITMQ
+BROKER_URL = os.getenv('CELERY_BROKER_URL')
+
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+# CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
 
 
 """
@@ -245,7 +258,8 @@ celery -A online_store flower
 Stripe
 stripe login
 stripe listen --forward-to localhost:8000/payment/webhook/
-
+                            https://ваше-приложение.herokuapp.com/payment/webhook/
+                            https://sun-beauty-eeba0d62cb29.herokuapp.com/payment/webhook/
 ngrok
 ngrok http 8000
 

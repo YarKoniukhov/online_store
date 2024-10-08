@@ -1,1 +1,3 @@
 /online_store/.env
+__pycache__/
+*.pyc

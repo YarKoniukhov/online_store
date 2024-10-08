@@ -1,1 +1,2 @@
 web: gunicorn online_store.wsgi --log-file -
+worker: celery -A online_store worker --loglevel=info

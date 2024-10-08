@@ -30,6 +30,7 @@
     }
 
 
+
   </style>
 </head>
 
@@ -97,7 +98,7 @@
         <td>{{ item.product.name }}</td>
         <td class="center">{{ item.quantity }}</td>
         <td class="center">{{item.price}} грн</td>
-        <td class="bold">{{item.get_cost}} грн</td>
+        <td class="bold center">{{item.get_cost}} грн</td>
       </tr>
     {% endfor %}
 
@@ -107,13 +108,13 @@
       </tr>
       <tr class="subtotal">
         <td colspan="2"></td>
-        <td class="bold right">Загальна вартість:</td>
-        <td class="bold">{{ order.get_total_cost_before_discount|floatformat:2 }} грн</td>
+        <td class="bold center">Загальна вартість:</td>
+        <td class="bold center">{{ order.get_total_cost_before_discount|floatformat:2 }} грн</td>
       </tr>
       <tr>
         <td colspan="2"></td>
-        <td class="bold right">Знижка {{ order.discount }}% :</td>
-        <td class="bold">{{ order.get_discount|floatformat:2 }} грн</td>
+        <td class="bold center">Знижка {{ order.discount }}% :</td>
+        <td class="bold center">{{ order.get_discount|floatformat:2 }} грн</td>
       </tr>
     {% endif %}
   </tbody>

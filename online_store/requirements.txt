@@ -12,13 +12,16 @@ click==8.1.7
 click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.3.0
+cron-descriptor==1.4.3
 cryptography==41.0.5
 cssselect2==0.7.0
 decorator==4.4.2
 defusedxml==0.7.1
 Django==4.2.6
+django-celery-beat==2.6.0
 django-extensions==3.2.3
 django-js-asset==2.0.0
+django-timezone-field==6.1.0
 exceptiongroup==1.1.3
 flower==2.0.1
 fonttools==4.45.1
@@ -55,6 +58,7 @@ pyparsing==3.1.1
 pyphen==0.14.0
 PySocks==1.7.1
 pytest==7.4.0
+python-crontab==3.0.0
 python-dateutil==2.8.2
 python-dotenv==1.0.0
 python-openid2==3.2

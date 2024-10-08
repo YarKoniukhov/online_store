@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 import weasyprint
 import os
+from .tasks import order_created
 
 
 def order_create(request):
@@ -41,7 +42,7 @@ def order_create(request):
             # очистить корзину
             cart.clear()
             # запустить асинхронное задание, отправка уведомления по email о заказе (orders/tasks.py)
-            # order_created.delay(order.id)
+            order_created.delay(order.id)
 
             # задать заказ в сеансе
             request.session['order_id'] = order.id
